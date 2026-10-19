@@ -199,15 +199,29 @@ con 2 procesos y 2 vCPU) detrás de un balanceador, con 10 conexiones de pool po
 
 ## 9. Capturas del APM
 
-> Tomarlas en <http://localhost:3001> con el rango de la corrida oficial:
-> <http://localhost:3001/d/lab04-crud?from=1792441330380&to=1792442680380>
+Capturas tomadas en Grafana (<http://localhost:3001>) con el rango de la corrida oficial, de
+15:22:10 a 15:44:40 del 19/10/2026.
 
-1. Panel de servicio completo (throughput, p95, error, pool) → `docs/capturas/01_panel_servicio.png`
-2. Panel “Latencia por percentiles (p50/p95/p99)” → `docs/capturas/02_latencia_percentiles.png`
-3. Panel “Tasa de error (5xx) por operación” → `docs/capturas/03_tasa_error.png`
-4. Una traza individual desglosada (*Explore → Tempo*, abrir una traza de `GET /api/productos`,
-   donde se ven `pg-pool.connect` y `pg.query`), una antes y otra después de la saturación
-   → `docs/capturas/04_traza_individual.png`
+**Panel de servicio.** Las peticiones por segundo suben por escalones hasta ~900 (15:31) y se
+aplanan; la latencia y las peticiones en espera del pool crecen desde las 15:34 (1200 usuarios).
+Los indicadores superiores muestran el último valor del rango (escalón de 2000 usuarios).
+
+![Panel de servicio](capturas/figura%207.png)
+
+**Latencia por percentiles.** p50, p95 y p99 en pocos milisegundos hasta las 15:34; luego saltan a
+cientos de milisegundos.
+
+![Latencia por percentiles](capturas/figura%208%20recortada.png)
+
+**Tasa de error por operación.** Cero respuestas 5xx en toda la prueba; los 462 fallos del escalón
+de 2000 usuarios los registró solo k6.
+
+![Tasa de error](capturas/figura%209.png)
+
+**Traza individual.** `GET /api/productos` a las 15:42:36 (2000 usuarios): de 1,18 s,
+`pg-pool.connect` ocupa 1,17 s y `pg.query` solo 5,86 ms.
+
+![Traza individual](capturas/figura%2010.png)
 
 ## 10. Entregables
 
@@ -221,6 +235,7 @@ con 2 procesos y 2 vCPU) detrás de un balanceador, con 10 conexiones de pool po
 | Tabla de resultados | Sección 5; `resultados/corrida1/tabla.md` y `resultados.json` |
 | Gráficas | `resultados/corrida1/graficas/` |
 | Capturas del APM | `docs/capturas/` (ver sección 9) |
+| Informe en formato APA 7 | `docs/Informe_Laboratorio_04_APM_APA7.docx` y `.pdf` |
 | Ficha del equipo | `docs/FICHA_EQUIPO.md` |
 | Respuestas de análisis | Sección 8 |
 | Declaración de uso de IA | `docs/DECLARACION_USO_IA.md` |

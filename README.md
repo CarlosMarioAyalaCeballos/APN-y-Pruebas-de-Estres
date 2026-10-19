@@ -15,6 +15,34 @@ necesita Docker (y, opcionalmente, Postman y el navegador).
                   └────────────────────────────────────────────────────────────────┘
 ```
 
+**Estudiantes:** Carlos Mario Ayala Ceballos y Santiago Gonzales Becerra ·
+**Asignatura:** Optativa IV – Sistemas de Tiempo Real Distribuidos (2026-2) ·
+**Docente:** Juan Carlos Polania Cortes
+
+## Resultado
+
+> La infraestructura sostiene **900 usuarios concurrentes con ≈ 895 peticiones por segundo**
+> (p95 = 12 ms, error 0 %) con 10 conexiones simultáneas a PostgreSQL. Por encima, el throughput
+> se aplana en ≈ 900 pet./s y el p95 supera los 500 ms. **El límite lo impone el procesador del
+> contenedor de la aplicación** (98–99 % de 1 vCPU); ampliar el pool de 10 a 30 conexiones no
+> elevó el throughput.
+
+| Usuarios | Pet./s | p95 (ms) | Error % | CPU app | ¿Cumple criterios? |
+|---|---|---|---|---|---|
+| 100 | 100,1 | 2,8 | 0,00 | 11 % | Sí |
+| 300 | 299,5 | 2,9 | 0,00 | 30 % | Sí |
+| 600 | 597,7 | 4,1 | 0,00 | 55 % | Sí |
+| **900** | **894,6** | **12,1** | **0,00** | **78 %** | **Sí (punto de saturación)** |
+| 1200 | 896,5 | 575,0 | 0,00 | 98 % | No |
+| 1500 | 917,8 | 857,6 | 0,00 | 98 % | No |
+| 2000 | 865,2 | 1686,2 | 0,30 | 99 % | No |
+
+- Informe completo (APA 7): [Word](docs/Informe_Laboratorio_04_APM_APA7.docx) ·
+  [PDF](docs/Informe_Laboratorio_04_APM_APA7.pdf) · [Markdown](docs/INFORME.md)
+- Criterios de saturación declarados antes de medir: [docs/CRITERIOS_SATURACION.md](docs/CRITERIOS_SATURACION.md)
+
+![Usuarios vs throughput](resultados/corrida1/graficas/1_usuarios_vs_throughput.png)
+
 ## Estructura
 
 | Ruta | Contenido |
@@ -25,7 +53,7 @@ necesita Docker (y, opcionalmente, Postman y el navegador).
 | `k6/escenario.js` | Escenario de carga versionado (mezcla, datos variables, escalones) |
 | `scripts/medir.ps1` | Ejecuta la prueba y muestrea `docker stats` y conexiones de PostgreSQL |
 | `analisis/` | Contenedor que construye la tabla, evalúa los criterios y dibuja las gráficas |
-| `docs/` | Criterios de saturación, ficha del equipo, informe y declaración de uso de IA |
+| `docs/` | Informe (Word, PDF y Markdown), criterios de saturación, ficha del equipo, capturas del APM y declaración de uso de IA |
 | `resultados/` | Datos crudos y procesados de cada corrida |
 | `postman/` | Colección para probar el CRUD a mano |
 
