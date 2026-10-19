@@ -1,0 +1,99 @@
+# Laboratorio 4 - APM y pruebas de estrés sobre el CRUD
+#
+#   docker compose up -d --build                  -> app + BD + APM (prueba de aceptación)
+#   docker compose --profile carga run --rm k6    -> prueba de estrés
+#   docker compose --profile analisis run --rm analisis -> tabla y gráficas
+name: lab04-apm
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: crud
+      POSTGRES_PASSWORD: crud
+      POSTGRES_DB: crud
+    command: ["postgres", "-c", "max_connections=100", "-c", "shared_buffers=128MB"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crud -d crud"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    deploy:
+      resources:
+        limits: { cpus: "1.0", memory: 1g }
+
+  apm:
+    # Grafana + Tempo (trazas) + Prometheus (métricas) + Loki + colector OpenTelemetry
+    image: grafana/otel-lgtm:0.8.1
+    ports:
+      - "3001:3000"   # Grafana (interfaz del APM) -> http://localhost:3001
+      - "4318:4318"   # OTLP/HTTP
+      - "9090:9090"   # Prometheus
+    volumes:
+      - ./apm/dashboard-provider.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/lab04.yaml:ro
+      - ./apm/dashboards:/otel-lgtm/lab04-dashboards:ro
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:3000/api/health && curl -fs http://localhost:9090/-/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 40
+    deploy:
+      resources:
+        limits: { cpus: "4.0", memory: 4g }
+
+  app:
+    build: ./app
+    image: lab04-crud-app:1.0
+    ports:
+      - "8080:3000"
+    environment:
+      DB_HOST: db
+      DB_POOL_MAX: ${DB_POOL_MAX:-10}
+      OTEL_SERVICE_NAME: crud-productos
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://apm:4318
+      OTEL_TRACES_SAMPLER: always_on
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      db: { condition: service_healthy }
+      apm: { condition: service_healthy }
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits: { cpus: "1.0", memory: 512m }
+
+  k6:
+    image: grafana/k6:0.54.0
+    profiles: ["carga"]
+    command: ["run", "/escenario/escenario.js"]
+    environment:
+      BASE_URL: http://app:3000
+      ESCALONES: ${ESCALONES:-100,300,600,900,1200,1500,2000}
+      DURACION: ${DURACION:-3m}
+      CALENTAR_DUR: ${CALENTAR_DUR:-1m}
+      PAUSA_MIN: ${PAUSA_MIN:-0.5}
+      PAUSA_MAX: ${PAUSA_MAX:-1.5}
+    volumes:
+      - ./k6:/escenario:ro
+      - ./resultados:/resultados
+    depends_on:
+      app: { condition: service_started }
+    deploy:
+      resources:
+        limits: { cpus: "4.0", memory: 2g }
+
+  analisis:
+    build: ./analisis
+    image: lab04-analisis:1.0
+    profiles: ["analisis"]
+    environment:
+      PROM_URL: http://apm:9090
+    volumes:
+      - ./resultados:/resultados
+
+volumes:
+  pgdata:
+

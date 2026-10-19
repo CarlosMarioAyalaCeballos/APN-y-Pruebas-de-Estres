@@ -1,0 +1,29 @@
+ Container lab04-apm-db-1 Running 
+ Container lab04-apm-apm-1 Running 
+ Container lab04-apm-app-1 Running 
+ Container lab04-apm-apm-1 Waiting 
+ Container lab04-apm-db-1 Waiting 
+ Container lab04-apm-db-1 Healthy 
+ Container lab04-apm-apm-1 Healthy 
+ Container lab04-apm-k6-run-d67c3d8b4cc5 Creating 
+ Container lab04-apm-k6-run-d67c3d8b4cc5 Created 
+time="2026-10-19T20:53:37Z" level=info msg="INICIO_MS=1792443217379" source=console
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=2018\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Post \"http://app:3000/api/productos\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=2040\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos/7326\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=1592\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Put \"http://app:3000/api/productos/9178\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Post \"http://app:3000/api/productos\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=9863\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=2283\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=7103\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=9624\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos/7428\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=1632\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Post \"http://app:3000/api/productos\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=1415\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Get \"http://app:3000/api/productos?limit=20&offset=1647\": request timeout"
+time="2026-10-19T20:57:47Z" level=warning msg="Request Failed" error="Post \"http://app:3000/api/productos\": request timeout"
+time="2026-10-19T21:00:39Z" level=error msg="thresholds on metrics 'http_req_duration{scenario:esc_2_1200u}' have been crossed"
+

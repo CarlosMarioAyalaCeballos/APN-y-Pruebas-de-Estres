@@ -1,0 +1,36 @@
+{
+  "info": {
+    "name": "Lab 4 - CRUD productos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base", "value": "http://localhost:8080" },
+    { "key": "id", "value": "1" }
+  ],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{base}}/health" } },
+    { "name": "Listar", "request": { "method": "GET", "url": "{{base}}/api/productos?limit=20&offset=0" } },
+    { "name": "Consultar", "request": { "method": "GET", "url": "{{base}}/api/productos/{{id}}" } },
+    {
+      "name": "Crear",
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('201', () => pm.response.to.have.status(201));",
+        "pm.collectionVariables.set('id', pm.response.json().id);"
+      ] } }],
+      "request": {
+        "method": "POST", "url": "{{base}}/api/productos",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Teclado mecánico\",\n  \"descripcion\": \"Switches rojos\",\n  \"precio\": 249.9,\n  \"stock\": 12\n}" }
+      }
+    },
+    {
+      "name": "Actualizar",
+      "request": {
+        "method": "PUT", "url": "{{base}}/api/productos/{{id}}",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Teclado mecánico RGB\",\n  \"descripcion\": \"Switches marrones\",\n  \"precio\": 279.9,\n  \"stock\": 8\n}" }
+      }
+    },
+    { "name": "Eliminar", "request": { "method": "DELETE", "url": "{{base}}/api/productos/{{id}}" } }
+  ]
+}

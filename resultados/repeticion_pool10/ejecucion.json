@@ -1,0 +1,8 @@
+﻿{
+    "etiqueta":  "repeticion_pool10",
+    "inicio":  1792442750,
+    "inicio_reposo":  1792442729,
+    "escalones":  "900,1200",
+    "calentamiento":  "1m",
+    "duracion":  "3m"
+}

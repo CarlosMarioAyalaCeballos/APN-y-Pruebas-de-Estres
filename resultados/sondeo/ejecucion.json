@@ -1,0 +1,7 @@
+﻿{
+    "inicio":  1792440963,
+    "etiqueta":  "sondeo",
+    "escalones":  "25,100,400,800",
+    "calentamiento":  "15s",
+    "duracion":  "45s"
+}

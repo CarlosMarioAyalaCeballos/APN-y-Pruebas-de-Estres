@@ -1,0 +1,8 @@
+﻿{
+    "etiqueta":  "corrida1",
+    "inicio":  1792441328,
+    "inicio_reposo":  1792441267,
+    "escalones":  "100,300,600,900,1200,1500,2000",
+    "calentamiento":  "1m",
+    "duracion":  "3m"
+}

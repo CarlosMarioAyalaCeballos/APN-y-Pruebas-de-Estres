@@ -1,0 +1,94 @@
+{
+  "uid": "lab04-crud",
+  "title": "Lab 4 - CRUD productos (APM)",
+  "tags": ["lab04"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "type": "stat", "title": "Throughput total (pet./s)",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "decimals": 1 } },
+      "targets": [{ "refId": "A", "expr": "sum(rate(http_server_duration_milliseconds_count{job=\"crud-productos\"}[30s]))" }]
+    },
+    {
+      "type": "stat", "title": "Latencia p95 (todas las operaciones)",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ms", "decimals": 1,
+        "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 500 } ] } } },
+      "targets": [{ "refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_duration_milliseconds_bucket{job=\"crud-productos\"}[30s])))" }]
+    },
+    {
+      "type": "stat", "title": "Tasa de error 5xx (%)",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent", "decimals": 2,
+        "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 1 } ] } } },
+      "targets": [{ "refId": "A", "expr": "100 * (sum(rate(http_server_duration_milliseconds_count{job=\"crud-productos\",http_status_code=~\"5..\"}[30s])) or vector(0)) / sum(rate(http_server_duration_milliseconds_count{job=\"crud-productos\"}[30s]))" }]
+    },
+    {
+      "type": "stat", "title": "Peticiones esperando conexión del pool",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "refId": "A", "expr": "max(db_pool_waiting{job=\"crud-productos\"})" }]
+    },
+    {
+      "type": "timeseries", "title": "Peticiones por segundo por operación",
+      "gridPos": { "x": 0, "y": 5, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "stacking": { "mode": "normal" }, "fillOpacity": 30 } } },
+      "targets": [{ "refId": "A", "legendFormat": "{{http_method}} {{http_route}}",
+        "expr": "sum by (http_method, http_route) (rate(http_server_duration_milliseconds_count{job=\"crud-productos\",http_route=~\"/api.*\"}[30s]))" }]
+    },
+    {
+      "type": "timeseries", "title": "Latencia por percentiles (p50 / p95 / p99)",
+      "gridPos": { "x": 12, "y": 5, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ms" } },
+      "targets": [
+        { "refId": "A", "legendFormat": "p50", "expr": "histogram_quantile(0.50, sum by (le) (rate(http_server_duration_milliseconds_bucket{job=\"crud-productos\"}[30s])))" },
+        { "refId": "B", "legendFormat": "p95", "expr": "histogram_quantile(0.95, sum by (le) (rate(http_server_duration_milliseconds_bucket{job=\"crud-productos\"}[30s])))" },
+        { "refId": "C", "legendFormat": "p99", "expr": "histogram_quantile(0.99, sum by (le) (rate(http_server_duration_milliseconds_bucket{job=\"crud-productos\"}[30s])))" }
+      ]
+    },
+    {
+      "type": "timeseries", "title": "Latencia p95 por operación",
+      "gridPos": { "x": 0, "y": 14, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "ms" } },
+      "targets": [{ "refId": "A", "legendFormat": "{{http_method}} {{http_route}}",
+        "expr": "histogram_quantile(0.95, sum by (le, http_method, http_route) (rate(http_server_duration_milliseconds_bucket{job=\"crud-productos\",http_route=~\"/api.*\"}[30s])))" }]
+    },
+    {
+      "type": "timeseries", "title": "Tasa de error (5xx) por operación",
+      "gridPos": { "x": 12, "y": 14, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0 } },
+      "targets": [{ "refId": "A", "legendFormat": "{{http_method}} {{http_route}}",
+        "expr": "100 * (sum by (http_method, http_route) (rate(http_server_duration_milliseconds_count{job=\"crud-productos\",http_route=~\"/api.*\",http_status_code=~\"5..\"}[30s])) or 0 * sum by (http_method, http_route) (rate(http_server_duration_milliseconds_count{job=\"crud-productos\",http_route=~\"/api.*\"}[30s]))) / sum by (http_method, http_route) (rate(http_server_duration_milliseconds_count{job=\"crud-productos\",http_route=~\"/api.*\"}[30s]))" }]
+    },
+    {
+      "type": "timeseries", "title": "Pool de conexiones a PostgreSQL",
+      "gridPos": { "x": 0, "y": 23, "w": 12, "h": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [
+        { "refId": "A", "legendFormat": "abiertas", "expr": "db_pool_total{job=\"crud-productos\"}" },
+        { "refId": "B", "legendFormat": "libres", "expr": "db_pool_idle{job=\"crud-productos\"}" },
+        { "refId": "C", "legendFormat": "en espera", "expr": "db_pool_waiting{job=\"crud-productos\"}" },
+        { "refId": "D", "legendFormat": "máximo", "expr": "db_pool_max{job=\"crud-productos\"}" }
+      ]
+    },
+    {
+      "type": "table", "title": "Trazas recientes (clic en el ID para ver el desglose app / BD)",
+      "gridPos": { "x": 12, "y": 23, "w": 12, "h": 9 },
+      "datasource": { "type": "tempo", "uid": "tempo" },
+      "targets": [{ "refId": "A", "queryType": "traceql", "limit": 20,
+        "datasource": { "type": "tempo", "uid": "tempo" },
+        "query": "{resource.service.name=\"crud-productos\" && span.http.route=~\"/api.*\"}" }]
+    }
+  ]
+}

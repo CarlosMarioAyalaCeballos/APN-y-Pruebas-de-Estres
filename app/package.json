@@ -1,0 +1,22 @@
+{
+  "name": "crud-productos",
+  "version": "1.0.0",
+  "description": "CRUD de productos instrumentado con OpenTelemetry (Laboratorio 4 - APM y pruebas de estrés)",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node --require ./src/tracing.js src/server.js"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "0.50.0",
+    "@opentelemetry/exporter-metrics-otlp-http": "0.53.0",
+    "@opentelemetry/exporter-trace-otlp-http": "0.53.0",
+    "@opentelemetry/resources": "1.26.0",
+    "@opentelemetry/sdk-metrics": "1.26.0",
+    "@opentelemetry/sdk-node": "0.53.0",
+    "@opentelemetry/semantic-conventions": "1.27.0",
+    "express": "4.21.0",
+    "pg": "8.13.0"
+  }
+}

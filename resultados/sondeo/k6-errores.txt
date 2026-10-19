@@ -1,0 +1,64 @@
+ Container lab04-apm-apm-1 Running 
+ Container lab04-apm-db-1 Running 
+ Container lab04-apm-app-1 Running 
+ Container lab04-apm-db-1 Waiting 
+ Container lab04-apm-apm-1 Waiting 
+ Container lab04-apm-db-1 Healthy 
+ Container lab04-apm-apm-1 Healthy 
+ Image grafana/k6:0.54.0 Pulling 
+ 4f4fb700ef54 Pulling fs layer 0B
+ 2961e627175d Pulling fs layer 0B
+ 707af19e45d8 Pulling fs layer 0B
+ 43c4264eed91 Pulling fs layer 0B
+ 4f4fb700ef54 Already exists 0B
+ 4f4fb700ef54 Pull complete 0B
+ 220862cf6e3f Download complete 0B
+ 707af19e45d8 Download complete 0B
+ 43c4264eed91 Downloading 1.049MB
+ 43c4264eed91 Downloading 1.049MB
+ 2961e627175d Downloading 1.049MB
+ 2961e627175d Downloading 1.049MB
+ 43c4264eed91 Downloading 2.097MB
+ 43c4264eed91 Downloading 2.097MB
+ 2961e627175d Downloading 2.097MB
+ 43c4264eed91 Downloading 2.097MB
+ 2961e627175d Downloading 2.097MB
+ 43c4264eed91 Downloading 3.146MB
+ 2961e627175d Downloading 3.146MB
+ 2961e627175d Downloading 4.194MB
+ 43c4264eed91 Download complete 0B
+ 43c4264eed91 Pull complete 0B
+ 2961e627175d Downloading 4.194MB
+ 707af19e45d8 Pull complete 0B
+ 2961e627175d Downloading 5.243MB
+ 2961e627175d Downloading 5.243MB
+ 2961e627175d Downloading 6.291MB
+ 2961e627175d Downloading 7.34MB
+ 2961e627175d Downloading 8.389MB
+ 2961e627175d Downloading 8.389MB
+ 2961e627175d Downloading 9.437MB
+ 2961e627175d Downloading 10.49MB
+ 2961e627175d Downloading 11.53MB
+ 2961e627175d Downloading 12.58MB
+ 2961e627175d Downloading 13.63MB
+ 2961e627175d Downloading 14.68MB
+ 2961e627175d Downloading 15.73MB
+ 2961e627175d Downloading 16.78MB
+ 2961e627175d Downloading 17.83MB
+ 2961e627175d Downloading 18.87MB
+ 2961e627175d Downloading 19.92MB
+ 2961e627175d Downloading 20.97MB
+ 2961e627175d Downloading 23.07MB
+ 2961e627175d Downloading 24.12MB
+ 2961e627175d Downloading 25.17MB
+ 2961e627175d Downloading 27.26MB
+ 2961e627175d Downloading 28.31MB
+ 2961e627175d Downloading 29.36MB
+ 2961e627175d Download complete 0B
+ 2961e627175d Extracting 1B
+ 2961e627175d Extracting 1B
+ 2961e627175d Pull complete 0B
+ Image grafana/k6:0.54.0 Pulled 
+ Container lab04-apm-k6-run-ce7e07377156 Creating 
+ Container lab04-apm-k6-run-ce7e07377156 Created 
+time="2026-10-19T20:16:12Z" level=info msg="INICIO_MS=1792440972989" source=console

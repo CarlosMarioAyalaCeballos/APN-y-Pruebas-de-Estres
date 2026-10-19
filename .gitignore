@@ -1,0 +1,13 @@
+# Dependencias (se instalan dentro de la imagen Docker)
+node_modules/
+
+# Archivos locales de herramientas
+.claude/
+.vscode/
+.idea/
+
+# Temporales
+resultados/build.log
+docs/respaldo/
+~$*.docx
+*.tmp
